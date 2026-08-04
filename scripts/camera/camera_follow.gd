@@ -14,7 +14,7 @@ var target: Node2D
 
 
 func _ready() -> void:
-	current = true
+	enabled = true
 	if target_path != NodePath(""):
 		target = get_node(target_path)
 
