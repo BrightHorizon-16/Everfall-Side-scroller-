@@ -1,18 +1,54 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="Script" path="res://scripts/player/movement.gd" id="1_movement"]
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_root"]
+[ext_resource type="Script" path="res://scripts/player/movement.gd" id="2_movement"]
+[ext_resource type="Script" path="res://scripts/components/health.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/player/combat.gd" id="4_combat"]
+[ext_resource type="Script" path="res://scripts/components/hurtbox.gd" id="5_hurtbox"]
+[ext_resource type="Script" path="res://scripts/components/hitbox.gd" id="6_hitbox"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(16, 32)
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(20, 24)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_player_root")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_1")
+shape = SubResource("RectangleShape2D_body")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-8, -16, 8, -16, 8, 16, -8, 16)
 color = Color(0.2, 0.6, 1, 1)
 
 [node name="Movement" type="Node" parent="."]
-script = ExtResource("1_movement")
+script = ExtResource("2_movement")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_health")
+
+[node name="Combat" type="Node" parent="."]
+script = ExtResource("4_combat")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("5_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 16
+monitoring = false
+monitorable = false
+script = ExtResource("6_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")

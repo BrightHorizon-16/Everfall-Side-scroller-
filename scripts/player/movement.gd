@@ -15,6 +15,9 @@ class_name PlayerMovement
 
 @onready var body: CharacterBody2D = get_parent()
 
+## 1 = facing right, -1 = facing left. Read by Combat to place the hitbox.
+var facing_direction: int = 1
+
 
 func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
@@ -37,5 +40,6 @@ func _handle_horizontal_movement() -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction != 0.0:
 		body.velocity.x = direction * speed
+		facing_direction = sign(direction)
 	else:
 		body.velocity.x = move_toward(body.velocity.x, 0.0, speed)
