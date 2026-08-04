@@ -33,7 +33,7 @@ func _apply_gravity(delta: float) -> void:
 
 func _chase_player() -> void:
 	if player and body.global_position.distance_to(player.global_position) <= detection_range:
-		var direction := sign(player.global_position.x - body.global_position.x)
+		var direction := signf(player.global_position.x - body.global_position.x)
 		body.velocity.x = direction * move_speed
 	else:
 		body.velocity.x = move_toward(body.velocity.x, 0.0, move_speed)

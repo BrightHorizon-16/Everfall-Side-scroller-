@@ -40,6 +40,6 @@ func _handle_horizontal_movement() -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction != 0.0:
 		body.velocity.x = direction * speed
-		facing_direction = sign(direction)
+		facing_direction = int(signf(direction))
 	else:
 		body.velocity.x = move_toward(body.velocity.x, 0.0, speed)
