@@ -23,5 +23,6 @@
 ## Notes / things you may want to review
 - A temporary placeholder floor (gray rectangle, "TestFloor") was added inside World purely so gravity/jumping can be tested. It's not real level geometry — delete or replace whenever you start building actual rooms.
 - Player and floor are untextured colored shapes (Polygon2D) since no art/animation work has been done yet.
-- No Combat, Health, Inventory, or Animation scripts/nodes have been created yet — out of scope for this milestone step.
+- No Inventory or Animation scripts/nodes have been created yet — out of scope so far.
 - **Milestone 1 additions:** `attack` input action bound to J (pick was arbitrary, easy to rebind). Player and Chaser roots now have thin coordinator scripts (`player.gd`, `chaser.gd`) whose only job is reacting to the `died` signal — this is new, they were script-less containers before. A `TestChaser` instance was added to `World` near the player spawn purely to make combat testable, same spirit as `TestFloor` — not real level content. Collision layers 1-7 are named in Project Settings → Layer Names for clarity.
+- **Deferred by request:** player/enemy bodies currently don't physically collide (each only collides with `world`), just their hitbox/hurtbox areas interact. You want physical body collision added later, once more content exists — not done yet, flagging so it isn't forgotten.
