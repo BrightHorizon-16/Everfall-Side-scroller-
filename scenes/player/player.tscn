@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_root"]
 [ext_resource type="Script" path="res://scripts/player/movement.gd" id="2_movement"]
@@ -6,6 +6,10 @@
 [ext_resource type="Script" path="res://scripts/player/combat.gd" id="4_combat"]
 [ext_resource type="Script" path="res://scripts/components/hurtbox.gd" id="5_hurtbox"]
 [ext_resource type="Script" path="res://scripts/components/hitbox.gd" id="6_hitbox"]
+[ext_resource type="Script" path="res://scripts/player/weapon_test_switcher.gd" id="7_weapon_switcher"]
+[ext_resource type="Resource" path="res://resources/weapons/sword.tres" id="8_sword"]
+[ext_resource type="Resource" path="res://resources/weapons/dagger.tres" id="9_dagger"]
+[ext_resource type="Resource" path="res://resources/weapons/spear.tres" id="10_spear"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(16, 32)
@@ -33,6 +37,13 @@ script = ExtResource("3_health")
 
 [node name="Combat" type="Node" parent="."]
 script = ExtResource("4_combat")
+equipped_weapon = ExtResource("8_sword")
+
+[node name="WeaponTestSwitcher" type="Node" parent="."]
+script = ExtResource("7_weapon_switcher")
+sword = ExtResource("8_sword")
+dagger = ExtResource("9_dagger")
+spear = ExtResource("10_spear")
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 8

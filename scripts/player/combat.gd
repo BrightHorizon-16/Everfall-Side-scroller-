@@ -1,17 +1,17 @@
 extends Node
 ## PlayerCombat
 ##
-## Single responsibility: trigger the player's one basic attack and
-## position/activate the Hitbox while it's swinging. No combo chains, no
-## weapon variety yet - that's deferred to a later milestone.
+## Single responsibility: trigger an attack using whichever Weapon is
+## currently equipped, and position/activate the Hitbox while swinging.
+## All stats (damage, speed, reach) come from the equipped Weapon
+## resource - this script doesn't know or care which weapon it is. No
+## combo chains, no heavy attacks yet - deferred to a later milestone.
 class_name PlayerCombat
 
-@export var attack_damage: int = 10
-@export var attack_duration: float = 0.2
-@export var attack_cooldown: float = 0.3
-@export var hitbox_offset: float = 16.0
+@export var equipped_weapon: Weapon
 
 @onready var hitbox: Hitbox = get_parent().get_node("Hitbox")
+@onready var hitbox_shape: CollisionShape2D = hitbox.get_node("CollisionShape2D")
 @onready var movement: PlayerMovement = get_parent().get_node("Movement")
 
 var _cooldown_timer: float = 0.0
@@ -19,8 +19,19 @@ var _attack_timer: float = 0.0
 
 
 func _ready() -> void:
-	hitbox.damage = attack_damage
-	hitbox.monitoring = false
+	if equipped_weapon:
+		equip_weapon(equipped_weapon)
+
+
+## Swap the active weapon. Updates the Hitbox's damage and collision
+## shape size to match. Safe to call at any time (e.g. from an inventory
+## system later, or the temporary WeaponTestSwitcher for now).
+func equip_weapon(weapon: Weapon) -> void:
+	equipped_weapon = weapon
+	hitbox.damage = weapon.damage
+	var rect_shape := hitbox_shape.shape as RectangleShape2D
+	if rect_shape:
+		rect_shape.size = weapon.hitbox_size
 
 
 func _process(delta: float) -> void:
@@ -31,7 +42,8 @@ func _process(delta: float) -> void:
 
 
 func _update_hitbox_position() -> void:
-	hitbox.position.x = hitbox_offset * movement.facing_direction
+	if equipped_weapon:
+		hitbox.position.x = equipped_weapon.hitbox_reach * movement.facing_direction
 
 
 func _tick_timers(delta: float) -> void:
@@ -44,8 +56,10 @@ func _tick_timers(delta: float) -> void:
 
 
 func _start_attack() -> void:
-	_attack_timer = attack_duration
-	_cooldown_timer = attack_duration + attack_cooldown
+	if not equipped_weapon:
+		return
+	_attack_timer = equipped_weapon.attack_duration
+	_cooldown_timer = equipped_weapon.attack_duration + equipped_weapon.attack_cooldown
 	hitbox.monitoring = true
 
 
