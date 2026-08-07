@@ -2,29 +2,14 @@
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/camera/camera_follow.gd" id="2_camera_follow"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/chaser.tscn" id="3_chaser"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
-size = Vector2(800, 20)
+[ext_resource type="PackedScene" path="res://scenes/regions/beginner_world.tscn" id="3_beginner_world"]
+[ext_resource type="Script" path="res://scripts/ui/player_health_bar.gd" id="4_player_health_bar"]
 
 [node name="Main" type="Node2D"]
 
 [node name="World" type="Node2D" parent="."]
 
-[node name="TestFloor" type="StaticBody2D" parent="World"]
-position = Vector2(0, 300)
-collision_layer = 1
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/TestFloor"]
-shape = SubResource("RectangleShape2D_2")
-
-[node name="Polygon2D" type="Polygon2D" parent="World/TestFloor"]
-polygon = PackedVector2Array(-400, -10, 400, -10, 400, 10, -400, 10)
-color = Color(0.3, 0.3, 0.3, 1)
-
-[node name="TestChaser" parent="World" instance=ExtResource("3_chaser")]
-position = Vector2(200, 250)
+[node name="BeginnerWorld" parent="World" instance=ExtResource("3_beginner_world")]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(0, 250)
@@ -35,3 +20,10 @@ enabled = true
 target_path = NodePath("../Player")
 
 [node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="UI"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 216.0
+offset_bottom = 40.0
+script = ExtResource("4_player_health_bar")

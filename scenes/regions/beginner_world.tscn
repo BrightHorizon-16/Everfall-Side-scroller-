@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/chaser.tscn" id="1_chaser"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(800, 20)
+
+[node name="BeginnerWorld" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 300)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+polygon = PackedVector2Array(-400, -10, 400, -10, 400, 10, -400, 10)
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="Chaser" parent="." instance=ExtResource("1_chaser")]
+position = Vector2(200, 250)

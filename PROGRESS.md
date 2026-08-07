@@ -30,6 +30,15 @@
 - [x] Temporary test-only weapon switching (keys 1/2/3) via `WeaponTestSwitcher`
 - [ ] Combo chains, heavy attacks, poise/crit/stat scaling, other weapon types, real inventory UI — intentionally deferred
 
+---
+
+# Milestone 2.5 — Beginner World + Combat Feedback
+
+- [x] `World` content moved out of loose test nodes into `scenes/regions/beginner_world.tscn` — a real first region, not scaffolding. Same floor + Chaser, just properly homed. Keep building on it rather than replacing it.
+- [x] Player health bar (fixed UI, top-left)
+- [x] Enemy health bar (world-space, floats above the enemy; generic — any future enemy with a `Health` sibling gets one automatically by adding the node)
+- [x] Hitbox debug visualization — permanent dev toggle (`debug_visible` on `Hitbox`), not scaffolding to delete, just likely defaults off once real animations exist
+
 ## Notes / things you may want to review
 - A temporary placeholder floor (gray rectangle, "TestFloor") was added inside World purely so gravity/jumping can be tested. It's not real level geometry — delete or replace whenever you start building actual rooms.
 - Player and floor are untextured colored shapes (Polygon2D) since no art/animation work has been done yet.
