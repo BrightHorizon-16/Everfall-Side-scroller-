@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/camera/camera_follow.gd" id="2_camera_follow"]
 [ext_resource type="PackedScene" path="res://scenes/regions/beginner_world.tscn" id="3_beginner_world"]
 [ext_resource type="Script" path="res://scripts/ui/player_health_bar.gd" id="4_player_health_bar"]
+[ext_resource type="Script" path="res://scripts/ui/weapon_label.gd" id="5_weapon_label"]
 
 [node name="Main" type="Node2D"]
 
@@ -12,7 +13,7 @@
 [node name="BeginnerWorld" parent="World" instance=ExtResource("3_beginner_world")]
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(0, 250)
+position = Vector2(-300, 250)
 
 [node name="Camera" type="Camera2D" parent="."]
 script = ExtResource("2_camera_follow")
@@ -27,3 +28,10 @@ offset_top = 16.0
 offset_right = 216.0
 offset_bottom = 40.0
 script = ExtResource("4_player_health_bar")
+
+[node name="WeaponLabel" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 216.0
+offset_bottom = 72.0
+script = ExtResource("5_weapon_label")

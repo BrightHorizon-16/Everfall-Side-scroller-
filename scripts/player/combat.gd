@@ -8,6 +8,8 @@ extends Node
 ## combo chains, no heavy attacks yet - deferred to a later milestone.
 class_name PlayerCombat
 
+signal weapon_changed(weapon: Weapon)
+
 @export var equipped_weapon: Weapon
 
 @onready var hitbox: Hitbox = get_parent().get_node("Hitbox")
@@ -32,6 +34,7 @@ func equip_weapon(weapon: Weapon) -> void:
 	var rect_shape := hitbox_shape.shape as RectangleShape2D
 	if rect_shape:
 		rect_shape.size = weapon.hitbox_size
+	weapon_changed.emit(weapon)
 
 
 func _process(delta: float) -> void:
