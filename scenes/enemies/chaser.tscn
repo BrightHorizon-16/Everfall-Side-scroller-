@@ -28,6 +28,11 @@ color = Color(0.8, 0.15, 0.15, 1)
 [node name="ChaserAI" type="Node" parent="."]
 script = ExtResource("2_ai")
 
+[node name="LedgeRay" type="RayCast2D" parent="."]
+position = Vector2(24, 0)
+target_position = Vector2(0, 40)
+collision_mask = 1
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_health")
 max_health = 30

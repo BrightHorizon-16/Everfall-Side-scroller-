@@ -1,10 +1,12 @@
 extends Area2D
 ## KillPlane
 ##
-## Generic instant-death trigger for anything with a Health component that
-## touches it. Used for level boundaries (falling off the map) - reuses
-## the same Health -> "died" signal pipeline as normal combat death, so
-## respawn (Player) / despawn (enemies) behavior doesn't get duplicated.
+## Resets anything with a reset_to_spawn() method back to its spawn point
+## when it touches this - used for level boundaries (falling off the
+## map). Deliberately separate from the Health/combat-damage pipeline:
+## falling out of the world isn't a combat death, so it doesn't go
+## through take_damage() and won't trigger despawn-on-death logic that's
+## meant for actually being defeated in a fight.
 class_name KillPlane
 
 
@@ -13,6 +15,5 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	var health := body.get_node_or_null("Health") as Health
-	if health:
-		health.take_damage(health.max_health)
+	if body.has_method("reset_to_spawn"):
+		body.reset_to_spawn()
