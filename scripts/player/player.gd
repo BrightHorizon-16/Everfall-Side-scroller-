@@ -8,6 +8,11 @@ extends CharacterBody2D
 ## Both combat death (Health's "died" signal) and falling out of the
 ## world (KillPlane, via reset_to_spawn()) end up doing the same thing
 ## for the player - reset to spawn, full health.
+##
+## Spawn position comes from a "PlayerSpawn" marker in the loaded region
+## (found via the "player_spawn" group), not a hardcoded position - so
+## Main doesn't need to know anything about where each region wants the
+## player to start.
 class_name Player
 
 var respawn_position: Vector2
@@ -16,6 +21,9 @@ var respawn_position: Vector2
 
 
 func _ready() -> void:
+	var spawn := get_tree().get_first_node_in_group("player_spawn")
+	if spawn:
+		global_position = spawn.global_position
 	respawn_position = global_position
 	health.died.connect(_on_died)
 

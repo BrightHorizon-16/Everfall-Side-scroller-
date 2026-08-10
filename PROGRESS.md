@@ -57,6 +57,14 @@
 - [x] `KillPlane` redesigned: it no longer routes through `Health.take_damage()`. It now calls a `reset_to_spawn()` method directly if the body has one - decoupling "fell out of the world" from "died in combat" entirely. Player's `_on_died()` (combat) and falling now both call the same `reset_to_spawn()`. Chaser's combat death (`_on_died()`) still despawns via `queue_free()` unchanged, but falling now calls its own `reset_to_spawn()` instead, so a Chaser that misjudges a jump resets instead of vanishing.
 - [x] Floor/platform visuals changed to solid black for contrast against the background
 
+---
+
+# Milestone 5 — Spawn Decoupling, Extended Platforming, End Point
+
+- [x] Player spawn position now comes from a `PlayerSpawn` marker inside `beginner_world.tscn` (found via the `player_spawn` group) instead of a hardcoded position in `main.tscn` — `main.tscn` no longer needs to know anything about where a region wants the player to start
+- [x] Platform sequence extended: original gap/platform unchanged, plus a second gap and two elevated "step" platforms further out, ending higher up than where the original section left off
+- [x] `EndPoint` goal trigger (yellow marker) at the far end — on touch, shows "Region Complete!" briefly and loops the player back to `PlayerSpawn`. No next-region/win/save system exists yet, so this is a testable checkpoint, not a real level-complete system.
+
 ## Notes / things you may want to review
 - A temporary placeholder floor (gray rectangle, "TestFloor") was added inside World purely so gravity/jumping can be tested. It's not real level geometry — delete or replace whenever you start building actual rooms.
 - Player and floor are untextured colored shapes (Polygon2D) since no art/animation work has been done yet.

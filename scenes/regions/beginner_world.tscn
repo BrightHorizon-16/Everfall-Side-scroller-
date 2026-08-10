@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/enemies/chaser.tscn" id="1_chaser"]
 [ext_resource type="Script" path="res://scripts/components/kill_plane.gd" id="2_kill_plane"]
+[ext_resource type="Script" path="res://scripts/components/end_point.gd" id="3_end_point"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(450, 20)
@@ -9,10 +10,19 @@ size = Vector2(450, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
 size = Vector2(150, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step"]
+size = Vector2(150, 20)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_killplane"]
-size = Vector2(2000, 40)
+size = Vector2(2600, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_endpoint"]
+size = Vector2(24, 32)
 
 [node name="BeginnerWorld" type="Node2D"]
+
+[node name="PlayerSpawn" type="Marker2D" parent="." groups=["player_spawn"]]
+position = Vector2(-300, 250)
 
 [node name="FloorLeft" type="StaticBody2D" parent="."]
 position = Vector2(-300, 300)
@@ -50,11 +60,35 @@ shape = SubResource("RectangleShape2D_platform")
 polygon = PackedVector2Array(-75, -10, 75, -10, 75, 10, -75, 10)
 color = Color(0, 0, 0, 1)
 
+[node name="StepUp1" type="StaticBody2D" parent="."]
+position = Vector2(750, 260)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepUp1"]
+shape = SubResource("RectangleShape2D_step")
+
+[node name="Polygon2D" type="Polygon2D" parent="StepUp1"]
+polygon = PackedVector2Array(-75, -10, 75, -10, 75, 10, -75, 10)
+color = Color(0, 0, 0, 1)
+
+[node name="StepUp2" type="StaticBody2D" parent="."]
+position = Vector2(975, 210)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepUp2"]
+shape = SubResource("RectangleShape2D_step")
+
+[node name="Polygon2D" type="Polygon2D" parent="StepUp2"]
+polygon = PackedVector2Array(-75, -10, 75, -10, 75, 10, -75, 10)
+color = Color(0, 0, 0, 1)
+
 [node name="Chaser" parent="." instance=ExtResource("1_chaser")]
 position = Vector2(200, 250)
 
 [node name="KillPlane" type="Area2D" parent="."]
-position = Vector2(0, 600)
+position = Vector2(250, 600)
 collision_layer = 0
 collision_mask = 6
 monitorable = false
@@ -62,3 +96,17 @@ script = ExtResource("2_kill_plane")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KillPlane"]
 shape = SubResource("RectangleShape2D_killplane")
+
+[node name="EndPoint" type="Area2D" parent="." groups=["end_point"]]
+position = Vector2(975, 180)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("3_end_point")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndPoint"]
+shape = SubResource("RectangleShape2D_endpoint")
+
+[node name="Polygon2D" type="Polygon2D" parent="EndPoint"]
+polygon = PackedVector2Array(-12, -16, 12, -16, 12, 16, -12, 16)
+color = Color(0.9, 0.8, 0.1, 0.8)
