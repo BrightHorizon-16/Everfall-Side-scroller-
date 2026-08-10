@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_root"]
 [ext_resource type="Script" path="res://scripts/player/movement.gd" id="2_movement"]
@@ -10,6 +10,8 @@
 [ext_resource type="Resource" path="res://resources/weapons/sword.tres" id="8_sword"]
 [ext_resource type="Resource" path="res://resources/weapons/dagger.tres" id="9_dagger"]
 [ext_resource type="Resource" path="res://resources/weapons/spear.tres" id="10_spear"]
+[ext_resource type="Script" path="res://scripts/components/knockback.gd" id="11_knockback"]
+[ext_resource type="Script" path="res://scripts/player/block.gd" id="12_block"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(16, 32)
@@ -32,6 +34,9 @@ color = Color(0.2, 0.6, 1, 1)
 [node name="Movement" type="Node" parent="."]
 script = ExtResource("2_movement")
 
+[node name="Knockback" type="Node" parent="."]
+script = ExtResource("11_knockback")
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_health")
 
@@ -44,6 +49,9 @@ script = ExtResource("7_weapon_switcher")
 sword = ExtResource("8_sword")
 dagger = ExtResource("9_dagger")
 spear = ExtResource("10_spear")
+
+[node name="Block" type="Node2D" parent="."]
+script = ExtResource("12_block")
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 8
@@ -63,3 +71,7 @@ script = ExtResource("6_hitbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="WeaponVisual" type="Polygon2D" parent="Hitbox"]
+polygon = PackedVector2Array(-10, -3, 8, -3, 14, 0, 8, 3, -10, 3)
+color = Color(0.75, 0.75, 0.8, 1)

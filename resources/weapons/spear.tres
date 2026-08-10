@@ -10,3 +10,6 @@ attack_duration = 0.25
 attack_cooldown = 0.4
 hitbox_reach = 30.0
 hitbox_size = Vector2(34, 14)
+knockback_force = 350.0
+silhouette = PackedVector2Array(-16, -2, 12, -2, 17, 0, 12, 2, -16, 2)
+silhouette_color = Color(0.55, 0.4, 0.25, 1)

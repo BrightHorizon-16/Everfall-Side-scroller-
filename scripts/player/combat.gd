@@ -3,9 +3,10 @@ extends Node
 ##
 ## Single responsibility: trigger an attack using whichever Weapon is
 ## currently equipped, and position/activate the Hitbox while swinging.
-## All stats (damage, speed, reach) come from the equipped Weapon
-## resource - this script doesn't know or care which weapon it is. No
-## combo chains, no heavy attacks yet - deferred to a later milestone.
+## All stats (damage, speed, reach, knockback, visual silhouette) come
+## from the equipped Weapon resource - this script doesn't know or care
+## which weapon it is. No combo chains, no heavy attacks yet - deferred
+## to a later milestone.
 class_name PlayerCombat
 
 signal weapon_changed(weapon: Weapon)
@@ -14,6 +15,7 @@ signal weapon_changed(weapon: Weapon)
 
 @onready var hitbox: Hitbox = get_parent().get_node("Hitbox")
 @onready var hitbox_shape: CollisionShape2D = hitbox.get_node("CollisionShape2D")
+@onready var weapon_visual: Polygon2D = hitbox.get_node("WeaponVisual")
 @onready var movement: PlayerMovement = get_parent().get_node("Movement")
 
 var _cooldown_timer: float = 0.0
@@ -25,15 +27,19 @@ func _ready() -> void:
 		equip_weapon(equipped_weapon)
 
 
-## Swap the active weapon. Updates the Hitbox's damage and collision
-## shape size to match. Safe to call at any time (e.g. from an inventory
-## system later, or the temporary WeaponTestSwitcher for now).
+## Swap the active weapon. Updates the Hitbox's damage, knockback,
+## collision shape size, and placeholder visual to match. Safe to call
+## at any time (e.g. from an inventory system later, or the temporary
+## WeaponTestSwitcher for now).
 func equip_weapon(weapon: Weapon) -> void:
 	equipped_weapon = weapon
 	hitbox.damage = weapon.damage
+	hitbox.knockback_force = weapon.knockback_force
 	var rect_shape := hitbox_shape.shape as RectangleShape2D
 	if rect_shape:
 		rect_shape.size = weapon.hitbox_size
+	weapon_visual.polygon = weapon.silhouette
+	weapon_visual.color = weapon.silhouette_color
 	weapon_changed.emit(weapon)
 
 
@@ -47,6 +53,11 @@ func _process(delta: float) -> void:
 func _update_hitbox_position() -> void:
 	if equipped_weapon:
 		hitbox.position.x = equipped_weapon.hitbox_reach * movement.facing_direction
+		# Mirrors the hitbox (and its child weapon silhouette) so the
+		# blade visually points away from the player either direction.
+		# The collision shape itself is symmetric, so this doesn't
+		# affect hit detection, only the visual.
+		hitbox.scale.x = movement.facing_direction
 
 
 func _tick_timers(delta: float) -> void:

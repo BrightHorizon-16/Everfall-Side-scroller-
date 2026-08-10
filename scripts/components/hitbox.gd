@@ -2,9 +2,10 @@ extends Area2D
 ## Hitbox
 ##
 ## Generic "I deal damage to whatever I touch" component. Detects Hurtbox
-## areas entering it and calls take_hit() on them. Used both for the
-## player's attack swing (toggled on/off by Combat) and an enemy's
-## always-on contact damage - the same script, different usage.
+## areas entering it and calls take_hit() on them, passing damage plus a
+## push-direction and force for knockback. Used both for the player's
+## attack swing (toggled on/off by Combat) and an enemy's always-on
+## contact damage - the same script, different usage.
 ##
 ## Also a permanent debug tool: while debug_visible is on, it draws its
 ## own collision area so hitbox reach/timing is visible during testing.
@@ -14,6 +15,7 @@ extends Area2D
 class_name Hitbox
 
 @export var damage: int = 10
+@export var knockback_force: float = 0.0
 @export var debug_visible: bool = true
 
 
@@ -28,7 +30,10 @@ func _process(_delta: float) -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Hurtbox:
-		area.take_hit(damage)
+		var direction := area.global_position - global_position
+		if direction == Vector2.ZERO:
+			direction = Vector2.RIGHT
+		area.take_hit(damage, direction.normalized(), knockback_force)
 
 
 func _draw() -> void:

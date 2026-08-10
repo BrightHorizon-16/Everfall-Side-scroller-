@@ -65,6 +65,16 @@
 - [x] Platform sequence extended: original gap/platform unchanged, plus a second gap and two elevated "step" platforms further out, ending higher up than where the original section left off
 - [x] `EndPoint` goal trigger (yellow marker) at the far end — on touch, shows "Region Complete!" briefly and loops the player back to `PlayerSpawn`. No next-region/win/save system exists yet, so this is a testable checkpoint, not a real level-complete system.
 
+---
+
+# Milestone 6 — Knockback, Block, Weapon Silhouettes
+
+- [x] `Knockback` component (generic, Player + Chaser) — decaying impulse that overrides horizontal velocity while active; must run after Movement/ChaserAI in node order to take effect, which it does in both scenes
+- [x] `Hitbox`/`Hurtbox` now carry knockback direction + force; `Weapon` gained `knockback_force` (Sword 250, Dagger 100, Spear 350 - lighter/heavier matching each weapon's identity in the design doc)
+- [x] Chaser's contact-damage Hitbox also has knockback (150) - hitting the player now pushes them, not just Player→Chaser
+- [x] `Block` (F key) — brief active window, full damage negation while active, then a cooldown. Player-only; `Hurtbox` checks for an optional sibling `Block` node, so this has zero effect on enemies. No partial-block %, no stamina cost - there's no stamina system yet.
+- [x] Weapon "models" — **not real art**, no image-generation tool is available in this environment. Built as flat polygon silhouettes instead, stored directly in each `Weapon` resource (`silhouette` + `silhouette_color`), swung in place of/alongside the debug hitbox rectangle. Distinct shape per weapon (short/wide Dagger, mid Sword, long/thin Spear).
+
 ## Notes / things you may want to review
 - A temporary placeholder floor (gray rectangle, "TestFloor") was added inside World purely so gravity/jumping can be tested. It's not real level geometry — delete or replace whenever you start building actual rooms.
 - Player and floor are untextured colored shapes (Polygon2D) since no art/animation work has been done yet.
